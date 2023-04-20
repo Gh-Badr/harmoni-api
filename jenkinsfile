@@ -5,19 +5,16 @@ pipeline {
         pollSCM '* * * * *'
     }
 
-    environment {
-        MAVEN_HOME = tool 'Maven' 
-    }
 
     stages {
         stage('Build') {
             steps {
-                sh "${env.MAVEN_HOME}/bin/mvn clean package"
+                sh "${MAVEN_HOME}/bin/mvn clean package"
             }
         }
         stage('Test') {
             steps {
-                sh "${env.MAVEN_HOME}/bin/mvn test"
+                sh "${MAVEN_HOME}/bin/mvn test"
             }
         }
     }
