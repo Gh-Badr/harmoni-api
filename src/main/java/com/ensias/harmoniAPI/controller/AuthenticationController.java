@@ -23,7 +23,7 @@ public class AuthenticationController {
         this.authManager=authManager;
     }
 
-    @PostMapping("/token")
+    @PostMapping("/authenticate")
     public String token(@RequestBody User user) {
     	Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
         return tokenService.generateToken(authentication);
