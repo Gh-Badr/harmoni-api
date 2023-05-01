@@ -1,4 +1,4 @@
-package com.ensias.harmoniAPI.config;
+package com.ensias.harmoniAPI.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +19,9 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
@@ -32,11 +31,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 @EnableWebSecurity
 public class SecurityConfig {
 	
-	private final RsaKeyProperties jwtConfigProperties;
-
-	public SecurityConfig(RsaKeyProperties jwtConfigProperties) {
-		this.jwtConfigProperties = jwtConfigProperties;
-	}
+	private RSAKey rsaKey;
 	
 	
 	@Bean
@@ -72,16 +67,21 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	JwtDecoder jwtDecoder() {
-		return NimbusJwtDecoder.withPublicKey(jwtConfigProperties.publicKey()).build();
-	}
+	public JWKSource<SecurityContext> jwkSource() {
+        rsaKey = Jwks.generateRsa();
+        JWKSet jwkSet = new JWKSet(rsaKey);
+        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
+    }
 	
 	@Bean
-	JwtEncoder jwtEncoder() {
-		JWK jwk = new RSAKey.Builder(jwtConfigProperties.publicKey()).privateKey(jwtConfigProperties.privateKey()).build();
-		JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
-		return new NimbusJwtEncoder(jwks);
-	}
+	JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks) {
+        return new NimbusJwtEncoder(jwks);
+    }
+	
+	@Bean
+    JwtDecoder jwtDecoder() throws JOSEException {
+         return NimbusJwtDecoder.withPublicKey(rsaKey.toRSAPublicKey()).build();
+    }
 	
 	
 

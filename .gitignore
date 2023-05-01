@@ -35,5 +35,4 @@ build/
 ### Mongodb properties ###
 mongodb.properties
 
-### Key properties ###
-certs
+

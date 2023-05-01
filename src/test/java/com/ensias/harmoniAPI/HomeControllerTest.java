@@ -14,8 +14,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.ensias.harmoniAPI.config.SecurityConfig;
 import com.ensias.harmoniAPI.controller.HomeController;
+import com.ensias.harmoniAPI.security.SecurityConfig;
 import com.ensias.harmoniAPI.controller.AuthenticationController;
 import com.ensias.harmoniAPI.service.TokenService;
 
