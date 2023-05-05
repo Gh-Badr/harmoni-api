@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.bcrypt.BCrypt;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -37,23 +35,19 @@ public class AuthenticationControllerTest {
 	@Autowired
     private UserRepository userRepository;
 	
-//	@MockBean
-//	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	
 	@BeforeAll
 	public void storeUserInTheDatabase() {
-//		given(passwordEncoder.encode(any(CharSequence.class))).willAnswer(invocation -> {
-//	        CharSequence rawPassword = invocation.getArgument(0);
-//	        return BCrypt.hashpw(rawPassword.toString(), BCrypt.gensalt());
-//	    });
-
-	
 		// Create a new user with username "badr" if not existing
 		if (userRepository.findByUsername("badr").isEmpty()) {
 	        User user = new User();
 	        user.setUsername("badr");
 	        user.setEmail("test@example.com");
-	        user.setPassword("{noop}password");
+	        user.setPassword(passwordEncoder.encode("password"));
+//	        user.setPassword("{noop}password");
 	        userRepository.save(user);
 	    }
 		
