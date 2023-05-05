@@ -4,6 +4,7 @@ package com.ensias.harmoniAPI.controller;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,8 +26,15 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public String token(@RequestBody User user) {
-    	Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
-        return tokenService.generateToken(authentication);
+    	try {
+            Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
+            System.out.println("Authentication successful");
+            return tokenService.generateToken(authentication);
+        } catch (AuthenticationException e) {
+            System.out.println("Authentication failed: " + e.getMessage());
+            throw e;
+        }
+        
     }
 
 }

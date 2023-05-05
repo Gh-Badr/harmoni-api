@@ -1,5 +1,6 @@
 package com.ensias.harmoniAPI.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,15 +11,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.ensias.harmoniAPI.service.CustomUserDetailsService;
+//import com.ensias.harmoniAPI.service.CustomUserDetailsService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -33,24 +38,38 @@ public class SecurityConfig {
 	
 	private RSAKey rsaKey;
 	
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+	
+//	@Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+	
 	
 	@Bean
     public AuthenticationManager authManager(UserDetailsService userDetailsService) {
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
+//        authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
     }
 	
-	
 	@Bean
-	public UserDetailsService user() {
-		return new InMemoryUserDetailsManager(
-			User.withUsername("badr")
-				.password("{noop}password")
-				.authorities("read")
-				.build()		
-		);
+	public UserDetailsService userDetailsService() {
+	    return customUserDetailsService;
 	}
+	
+	
+//	@Bean
+//	public UserDetailsService user() {
+//		return new InMemoryUserDetailsManager(
+//			User.withUsername("badr")
+//				.password("{noop}password")
+//				.authorities("read")
+//				.build()		
+//		);
+//	}
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
