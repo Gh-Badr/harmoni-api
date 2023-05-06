@@ -42,7 +42,7 @@ public class AuthenticationControllerTest {
 	@BeforeAll
 	public void storeUserInTheDatabase() {
 		// Create a new user with username "badr" if not existing
-		if (userRepository.findByUsername("badr").isEmpty()) {
+		if (!(userRepository.existsByUsername("badr"))) {
 	        User user = new User();
 	        user.setUsername("badr");
 	        user.setEmail("test@example.com");
