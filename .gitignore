@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-### Mongodb properties ###
-mongodb.properties
+### Credentials ###
+credentials.properties
 
 

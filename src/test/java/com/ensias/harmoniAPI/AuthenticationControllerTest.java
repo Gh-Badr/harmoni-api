@@ -47,7 +47,6 @@ public class AuthenticationControllerTest {
 	        user.setUsername("badr");
 	        user.setEmail("test@example.com");
 	        user.setPassword(passwordEncoder.encode("password"));
-//	        user.setPassword("{noop}password");
 	        userRepository.save(user);
 	    }
 		
