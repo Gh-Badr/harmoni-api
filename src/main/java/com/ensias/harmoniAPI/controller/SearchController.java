@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ import com.ensias.harmoniAPI.service.SearchService;
 
 
 @RestController
+@RequestMapping("/search")
 public class SearchController {
 
 	private final SearchService searchService;
@@ -24,11 +26,26 @@ public class SearchController {
 	    this.searchService = searchService;
 	  }
 
-	  @GetMapping("/search")
-	  public ResponseEntity<List<Map<String, Object>>> searchTracks(@RequestParam("q") String query, @RequestParam("limit") int limit) {
-		  List<Map<String, Object>> tracks = searchService.searchForTracks(query, limit);
-	    return new ResponseEntity<>(tracks, HttpStatus.OK);
-	  }
+	  @GetMapping("/byName")
+		public ResponseEntity<List<Map<String, Object>>> searchTracksByName(@RequestParam("q") String query,
+				@RequestParam("limit") int limit) {
+			List<Map<String, Object>> tracks = searchService.searchForTracksByName(query, limit);
+			return new ResponseEntity<>(tracks, HttpStatus.OK);
+		}
+
+		@GetMapping("/byArtist")
+		public ResponseEntity<List<Map<String, Object>>> searchTracksByArtist(@RequestParam("q") String query,
+				@RequestParam("limit") int limit) {
+			List<Map<String, Object>> tracks = searchService.searchForTracksByArtist(query, limit);
+			return new ResponseEntity<>(tracks, HttpStatus.OK);
+		}
+
+		@GetMapping("/byAlbum")
+		public ResponseEntity<List<Map<String, Object>>> searchTracksByAlbum(@RequestParam("q") String query,
+				@RequestParam("limit") int limit) {
+			List<Map<String, Object>> tracks = searchService.searchForTracksByAlbum(query, limit);
+			return new ResponseEntity<>(tracks, HttpStatus.OK);
+		}
 	
 	
 }

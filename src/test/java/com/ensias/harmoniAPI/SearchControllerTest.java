@@ -76,9 +76,9 @@ public class SearchControllerTest {
 
 		List<Map<String, Object>> trackList = Arrays.asList(trackMap);
 
-		when(searchService.searchForTracks(anyString(), anyInt())).thenReturn(trackList);
+		when(searchService.searchForTracksByName(anyString(), anyInt())).thenReturn(trackList);
 
-		mockMvc.perform(get("/search")
+		mockMvc.perform(get("/search/byName")
 				.param("q", "search query")
 				.param("limit", "1")
 				.header("Authorization", "Bearer " + token))
