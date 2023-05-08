@@ -20,6 +20,10 @@ public class UserPrincipal implements UserDetails {
     public UserPrincipal(User user) {
         this.user = user;
     }
+    
+    public String getId() {
+    	return user.getId();
+    }
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
