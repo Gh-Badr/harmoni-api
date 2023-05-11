@@ -4,6 +4,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import com.ensias.harmoniAPI.service.PlaylistService;
 
 @RestController
 @RequestMapping("/playlists")
+@CrossOrigin(exposedHeaders="Access-Control-Allow-Origin")
 public class PlaylistController {
 
 	@Autowired
