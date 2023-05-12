@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import org.apache.hc.core5.http.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.ClientCredentials;
@@ -21,6 +24,7 @@ public class SpotifyConfig {
 	private String clientSecret;
 
 	@Bean
+	@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
     public SpotifyApi spotifyApi() throws IOException, SpotifyWebApiException, ParseException {
         SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setClientId(clientId)

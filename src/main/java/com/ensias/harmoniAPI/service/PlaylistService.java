@@ -13,11 +13,11 @@ public class PlaylistService {
     @Autowired
     private PlaylistRepository playlistRepository;
 
-    public Playlist createPlaylist(String name, String username) {
+    public void createPlaylist(String name, String username) {
         Playlist playlist = new Playlist();
         playlist.setName(name);
         playlist.setUsername(username);
-        return playlistRepository.save(playlist);
+        playlistRepository.save(playlist);
     }
 
     // Other methods for adding, removing, and getting songs from a playlist

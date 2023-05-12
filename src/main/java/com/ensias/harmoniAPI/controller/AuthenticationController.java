@@ -1,6 +1,7 @@
 package com.ensias.harmoniAPI.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,14 +18,12 @@ import com.ensias.harmoniAPI.service.TokenService;
 @CrossOrigin(exposedHeaders="Access-Control-Allow-Origin")
 public class AuthenticationController {
 	
-	private final TokenService tokenService;
-    private final AuthenticationManager authManager;
-    
-
-    public AuthenticationController(TokenService tokenService,AuthenticationManager authManager) {
-        this.tokenService = tokenService;
-        this.authManager=authManager;
-    }
+	
+	@Autowired
+	private TokenService tokenService;
+	
+	@Autowired
+    private AuthenticationManager authManager;
 
     @PostMapping("/authenticate")
     public String token(@RequestBody User user) {
